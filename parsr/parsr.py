@@ -26,6 +26,7 @@ functions = {
 }
 
 identifiers = {
+    "_c"        : 2.998*(10**(8)),          #Speed of EM wave (ms^-1)
     "_e"        : math.e,
     "_h"        : 6.626*(10**(-34)),        #Planck constant (Js)
     "_k"        : 1.381*(10**(-23)),        #Boltzmann constant (JK^−1)
@@ -87,7 +88,10 @@ class Parser(object):
 
     def p_expression_function(self, p):
         "expression : FUNCTION LPAREN expression RPAREN"
-        p[0] = functions[p[1]](p[3])
+        try:
+            p[0] = functions[p[1]](p[3])
+        except:
+            print "Function '%s' not defined." % p[1]
 
     def p_expression_assignment(self, p):
         "expression : IDENTIFIER EQUALS expression"
