@@ -23,7 +23,10 @@ functions = {
     "tanh"      : math.tanh,
 }
 
-identifiers = {}
+identifiers = {
+    "pi"        : math.pi,
+    "e"         : math.e,
+}
 
 class Parser(object):        
     lexer = lexr.Lexer()
