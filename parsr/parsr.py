@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import ply.yacc as yacc
 import lexr
 import math
@@ -24,8 +26,12 @@ functions = {
 }
 
 identifiers = {
-    "pi"        : math.pi,
-    "e"         : math.e,
+    "_e"        : math.e,
+    "_h"        : 6.626*(10**(-34)),        #Planck constant (Js)
+    "_k"        : 1.381*(10**(-23)),        #Boltzmann constant (JK^−1)
+    "_Na"       : 6.022*(10**(23)),         #Avogadro constant (mol^−1)
+    "_pi"       : math.pi,
+    "_u"        : 1.661*(10**(-27)),        #unified atomic mass unit (kg)
 }
 
 class Parser(object):        
@@ -90,10 +96,13 @@ class Parser(object):
 
     def p_assignment(self, p):
         "expression : IDENTIFIER"
-        p[0] = identifiers[p[1]]   
+        try:
+            p[0] = identifiers[p[1]] 
+        except:
+            print "Identifier not found." 
 
     def p_error(self, p):
-        print "Syntax error in input!"
+        print "Syntax error in input."
 
 def get_parser():
     return yacc.yacc(module=Parser())
