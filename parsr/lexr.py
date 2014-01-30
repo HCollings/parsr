@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
-import ply.lex as lex
+try:
+    import ply.lex as lex
+except ImportError, err:
+    print "Cannot load prerequisite module(s)"
 
 #   RESERVED:
 #       LIST OF RESERVED TOKEN TYPES
@@ -77,5 +79,5 @@ class Lexer(object):
     t_ignore  = " \t"
 
     def t_error(self, t):
-        print "Illegal character '%s'" % t.value[0]
+        print "Illegal character \"%s\"" % t.value[0]
         t.lexer.skip(1)      

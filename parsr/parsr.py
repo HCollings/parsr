@@ -1,28 +1,31 @@
 # -*- coding: utf-8 -*-
-
-import ply.yacc as yacc
-import lexr
-import math
+try:
+    import ply.yacc as yacc
+    import lexr
+    import math
+    import sympy
+except ImportError, err:
+    print "Cannot load prerequisite module(s)"
 
 functions = {
-    "acos"      : math.acos,
-    "acosh"     : math.acosh,
-    "asin"      : math.asin,
-    "asinh"     : math.asinh,
-    "atan"      : math.atan,
-    "atanh"     : math.atanh,
-    "cos"       : math.cos,
-    "cosh"      : math.cosh,
+    "acos"      : sympy.acos,
+    "acosh"     : sympy.acosh,
+    "asin"      : sympy.asin,
+    "asinh"     : sympy.asinh,
+    "atan"      : sympy.atan,
+    "atanh"     : sympy.atanh,
+    "cos"       : sympy.cos,
+    "cosh"      : sympy.cosh,
     "degrees"   : math.degrees,
-    "exp"       : math.exp,
-    "ln"        : math.log,    
+    "exp"       : sympy.exp,
+    "ln"        : sympy.log,    
     "log"       : math.log10,
     "radians"   : math.radians,           
-    "sin"       : math.sin,
-    "sinh"      : math.sinh,
-    "sqrt"      : math.sqrt,    
-    "tan"       : math.tan,
-    "tanh"      : math.tanh,
+    "sin"       : sympy.sin,
+    "sinh"      : sympy.sinh,
+    "sqrt"      : sympy.sqrt,    
+    "tan"       : sympy.tan,
+    "tanh"      : sympy.tanh,
 }
 
 identifiers = {
@@ -91,7 +94,7 @@ class Parser(object):
         try:
             p[0] = functions[p[1]](p[3])
         except:
-            print "Function '%s' not defined." % p[1]
+            print "Function \"%s\" not defined." % p[1]
 
     def p_expression_assignment(self, p):
         "expression : IDENTIFIER EQUALS expression"
@@ -102,7 +105,7 @@ class Parser(object):
         "expression : IDENTIFIER"
         try:
             p[0] = identifiers[p[1]] 
-        except:
+        except LookupError:
             print "Identifier not found." 
 
     def p_error(self, p):
