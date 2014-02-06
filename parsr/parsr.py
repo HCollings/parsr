@@ -89,24 +89,41 @@ class Parser(object):
         "expression : expression EXPONENT expression"
         p[0] = math.pow(p[1], p[3])        
 
+    def p_statement(self, p):
+        "expression : statement"
+        p[0] = p[1]
+
+    def p_statement_assignment(self, p):
+        """statement : IDENTIFIER EQUALS expression
+                     | IDENTIFIER EQUALS list"""
+        identifiers.update({p[1]: p[3]})
+        p[1] = p[3]
+
+    def p_get_assignment(self, p):
+        "statement : IDENTIFIER"
+        try:
+            p[0] = identifiers[p[1]] 
+        except LookupError:
+            print "Identifier not found."
+
+    def p_list(self, p):
+        """list : LBRACKET group RBRACKET
+                | LBRACKET expression RBRACKET"""
+        p[0] = [p[2]]
+        print p[0] 
+
+    def p_group(self, p):
+        "group : statement COMMA statement"
+        p[0] = [p[1]] + p[3] 
+        print p[0]         
+
     def p_expression_function(self, p):
-        "expression : FUNCTION LPAREN expression RPAREN"
+        """expression : FUNCTION LPAREN expression RPAREN
+                      | FUNCTION LPAREN list RPAREN"""
         try:
             p[0] = functions[p[1]](p[3])
         except:
             print "Function \"%s\" not defined." % p[1]
-
-    def p_expression_assignment(self, p):
-        "expression : IDENTIFIER EQUALS expression"
-        identifiers.update({p[1]: p[3]})
-        p[1] = p[3]
-
-    def p_assignment(self, p):
-        "expression : IDENTIFIER"
-        try:
-            p[0] = identifiers[p[1]] 
-        except LookupError:
-            print "Identifier not found." 
 
     def p_error(self, p):
         print "Syntax error in input."

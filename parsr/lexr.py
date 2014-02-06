@@ -24,6 +24,9 @@ class Lexer(object):
         "EXPONENT",
         "LPAREN",
         "RPAREN",
+        "COMMA",
+        "LBRACKET",
+        "RBRACKET",
         "FUNCTION",
         "IDENTIFIER",     
     ]
@@ -40,6 +43,9 @@ class Lexer(object):
     t_EXPONENT  = r"\^"
     t_LPAREN    = r"\("
     t_RPAREN    = r"\)"
+    t_COMMA     = r","
+    t_LBRACKET  = r"\["
+    t_RBRACKET  = r"\]"
 
     #   OTHER TOKEN SPECIFICATION:
     #       FUNCTION TO NEEDED FOR SPECIAL TOKEN TYPES
