@@ -107,14 +107,18 @@ class Parser(object):
             print "Identifier not found."
 
     def p_list(self, p):
-        """list : LBRACKET group RBRACKET
-                | LBRACKET expression RBRACKET"""
+        """list : LBRACKET statement RBRACKET
+                | LBRACKET group RBRACKET"""
         p[0] = [p[2]]
         print p[0] 
 
     def p_group(self, p):
-        "group : statement COMMA statement"
-        p[0] = [p[1]] + p[3] 
+        """group : statement COMMA statement
+                 | group COMMA statement"""
+        if len(p[2] > 1) and type(p[2]) == "list":
+            p[0] = p[2] + p[3]
+        else:
+            p[0] = [p[1], p[3]]
         print p[0]         
 
     def p_expression_function(self, p):
